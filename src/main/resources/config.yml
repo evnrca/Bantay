@@ -148,5 +148,9 @@ messages:
   help-header: "&8&m----------- &cBantay &8&m-----------"
   help-reload: "&e/bantay reload &7- Reload configuration"
   help-bypass: "&e/bantay bypass <player> &7- Toggle bypass for a player"
+  help-version: "&e/bantay version &7- Show plugin version"
   help-help: "&e/bantay help &7- Show this help message"
   help-footer: "&8&m--------------------------------"
+
+  # Version message (supports {version} placeholder)
+  version: "&eBantay &fv{version} &7by &fevnrca"

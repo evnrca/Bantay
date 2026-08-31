@@ -55,6 +55,12 @@ public class BantayCommand implements CommandExecutor {
                         "&eUse a permission plugin (LuckPerms/PermissionsEx) to manage bantay.bypass for " + target.getName());
                 return true;
 
+            case "version":
+                String versionMsg = plugin.getConfigManager().getVersionMsg()
+                        .replace("{version}", plugin.getDescription().getVersion());
+                sender.sendMessage(plugin.getConfigManager().getPrefix() + versionMsg);
+                return true;
+
             case "help":
             default:
                 sendHelp(sender);
@@ -66,6 +72,7 @@ public class BantayCommand implements CommandExecutor {
         sender.sendMessage(plugin.getConfigManager().getHelpHeader());
         sender.sendMessage(plugin.getConfigManager().getHelpReload());
         sender.sendMessage(plugin.getConfigManager().getHelpBypass());
+        sender.sendMessage(plugin.getConfigManager().getHelpVersion());
         sender.sendMessage(plugin.getConfigManager().getHelpHelp());
         sender.sendMessage(plugin.getConfigManager().getHelpFooter());
     }

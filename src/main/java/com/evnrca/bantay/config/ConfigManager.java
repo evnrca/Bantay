@@ -46,8 +46,10 @@ public class ConfigManager {
     private String helpHeader;
     private String helpReload;
     private String helpBypass;
+    private String helpVersion;
     private String helpHelp;
     private String helpFooter;
+    private String versionMsg;
 
     public ConfigManager(Bantay plugin) {
         this.plugin = plugin;
@@ -104,8 +106,10 @@ public class ConfigManager {
         helpHeader = colorize(config.getString("messages.help-header", "&8&m----------- &cBantay &8&m-----------"));
         helpReload = colorize(config.getString("messages.help-reload", "&e/bantay reload &7- Reload configuration"));
         helpBypass = colorize(config.getString("messages.help-bypass", "&e/bantay bypass <player> &7- Toggle bypass for a player"));
+        helpVersion = colorize(config.getString("messages.help-version", "&e/bantay version &7- Show plugin version"));
         helpHelp = colorize(config.getString("messages.help-help", "&e/bantay help &7- Show this help message"));
         helpFooter = colorize(config.getString("messages.help-footer", "&8&m--------------------------------"));
+        versionMsg = colorize(config.getString("messages.version", "&eBantay &fv{version} &7by &fevnrca"));
     }
 
     private String colorize(String input) {
@@ -143,5 +147,7 @@ public class ConfigManager {
     public String getHelpReload() { return helpReload; }
     public String getHelpBypass() { return helpBypass; }
     public String getHelpHelp() { return helpHelp; }
+    public String getHelpVersion() { return helpVersion; }
     public String getHelpFooter() { return helpFooter; }
+    public String getVersionMsg() { return versionMsg; }
 }
