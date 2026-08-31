@@ -1,0 +1,152 @@
+# Bantay Configuration
+# "Bantay" - Filipino for "guard/watchman"
+# A lightweight chat moderation plugin specialized in filtering Filipino (Tagalog/Taglish) profanity
+
+# ==============================================================================
+# PROFANITY FILTER SETTINGS
+# ==============================================================================
+filter:
+  # Enable/disable Filipino (Tagalog/Taglish) profanity filtering
+  # This is the primary, specialized filter for Filipino profanity
+  filipino-enabled: true
+
+  # Enable/disable English profanity filtering
+  # This is a secondary, optional filter - server owners can extend the list
+  english-enabled: true
+
+  # List of Filipino profanity words/phrases to filter
+  # Add or remove words as needed for your community
+  # Matching is case-insensitive and handles spaced variants (e.g., "putang ina" catches "putangina")
+  filipino-words:
+    - "putangina"
+    - "putang ina"
+    - "tangina"
+    - "tang ina"
+    - "gago"
+    - "gaga"
+    - "ulol"
+    - "bobo"
+    - "tanga"
+    - "punyeta"
+    - "leche"
+    - "pakshet"
+    - "pakyu"
+    - "hayop"
+    - "hayup"
+    - "kupal"
+    - "tarantado"
+    - "lintik"
+    - "peste"
+    - "pucha"
+    - "puta"
+    - "inutil"
+    - "sira ulo"
+
+  # List of English profanity words to filter (secondary/optional)
+  # Keep this short - server owners should extend per their community standards
+  english-words:
+    - "damn"
+    - "hell"
+    - "shit"
+    - "fuck"
+    - "bitch"
+    - "ass"
+    - "crap"
+
+  # Normalize common leetspeak substitutions before matching
+  # When true, converts @/4->a, 3->e, 1/!->i, 0->o, $->s
+  # Also applies custom aliases from the aliases map below
+  normalize-leetspeak: true
+
+  # Custom shorthand-to-root mappings for Filipino texting style
+  # Add your own common abbreviations here (e.g., "tgna" -> "tangina")
+  # Keys are the shorthand, values are the root word they map to
+  aliases:
+    "tgna": "tangina"
+    "pgna": "pangina"
+    "pkyn": "pakyu"
+    "pksht": "pakshet"
+    "ggo": "gago"
+    "gga": "gaga"
+    "bbo": "bobo"
+    "tng": "tanga"
+    "ulol": "ulol"
+    "kpl": "kupal"
+
+  # Collapse 3+ repeated characters before matching
+  # e.g., "tanginaaaa" -> "tangina", "bobo!!!" -> "bobo"
+  strip-repeated-chars: true
+
+  # Character used for censoring matched words
+  censor-char: "*"
+
+  # If true, always replace matched words with exactly 4 censor characters
+  # This prevents leaking word length as a hint about what was censored
+  fixed-length-censor: false
+
+  # If true, notify online staff (players with bantay.admin) when a message is censored
+  # Shows the original uncensored message to staff silently
+  notify-staff: false
+
+# ==============================================================================
+# CHAT COOLDOWN SETTINGS
+# ==============================================================================
+cooldown:
+  chat:
+    # Enable/disable chat message cooldown
+    enabled: true
+
+    # Cooldown duration in seconds
+    seconds: 3
+
+  command:
+    # Enable/disable command cooldown
+    enabled: true
+
+    # Global command cooldown in seconds (applies to all commands unless overridden)
+    seconds: 2
+
+    # Per-command cooldown overrides (in seconds)
+    # These override the global cooldown for specific commands
+    per-command-overrides:
+      "/spawn": 10
+      "/tpa": 15
+      "/home": 10
+      "/warp": 5
+
+    # Commands that should never be throttled (even without bypass permission)
+    # Add essential commands here like /msg, /help, /rules, etc.
+    exempt-commands: []
+
+# ==============================================================================
+# MESSAGES
+# ==============================================================================
+# All messages support &-style color codes (e.g., &c = red, &a = green, &e = yellow)
+# Placeholders: {seconds} = remaining cooldown, {command} = command name
+
+messages:
+  # Prefix for all plugin messages
+  prefix: "&8[&cBantay&8] &r"
+
+  # Shown when a player tries to chat during cooldown
+  chat-cooldown: "&cPlease wait {seconds} second(s) before chatting again."
+
+  # Shown when a player tries to use a command during cooldown
+  command-cooldown: "&cCommand &e{command} &cis on cooldown. Wait {seconds} second(s)."
+
+  # Shown when config is reloaded successfully
+  reload-success: "&aConfiguration reloaded successfully!"
+
+  # Shown when bypass is toggled for a player
+  bypass-enabled: "&aBypass enabled for &e{player}&a."
+  bypass-disabled: "&cBypass disabled for &e{player}&c."
+
+  # Shown when a player is not found for bypass command
+  player-not-found: "&cPlayer '&e{player}&c' not found."
+
+  # Help message header
+  help-header: "&8&m----------- &cBantay &8&m-----------"
+  help-reload: "&e/bantay reload &7- Reload configuration"
+  help-bypass: "&e/bantay bypass <player> &7- Toggle bypass for a player"
+  help-help: "&e/bantay help &7- Show this help message"
+  help-footer: "&8&m--------------------------------"
