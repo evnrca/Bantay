@@ -30,7 +30,6 @@ public class ConfigManager {
     // Phonetic matching
     private boolean phoneticEnabled;
     private double phoneticThreshold;
-    private Map<String, String> profanitySoundexMap;
 
     // ML Toxicity detection
     private boolean mlToxicityEnabled;
@@ -51,7 +50,7 @@ public class ConfigManager {
     private Map<String, Integer> commandOverrides;
     private Set<String> exemptCommands;
 
-    // Messages
+    // Messages (hardcoded)
     private String prefix;
     private String chatCooldownMsg;
     private String commandCooldownMsg;
@@ -90,7 +89,6 @@ public class ConfigManager {
         // Phonetic matching
         phoneticEnabled = config.getBoolean("filter.phonetic-matching.enabled", false);
         phoneticThreshold = config.getDouble("filter.phonetic-matching.threshold", 0.85);
-        profanitySoundexMap = new ConcurrentHashMap<>();
 
         // ML Toxicity detection
         mlToxicityEnabled = config.getBoolean("filter.ml-toxicity.enabled", false);
@@ -127,7 +125,7 @@ public class ConfigManager {
             exemptCommands.addAll(config.getStringList("cooldown.command.exempt-commands"));
         }
 
-        // Messages (hardcoded - not configurable)
+        // Messages (hardcoded)
         prefix = colorize("&8[&cBantay&8] &r");
         chatCooldownMsg = colorize("&cPlease wait {seconds} second(s) before chatting again.");
         commandCooldownMsg = colorize("&cCommand &e{command} &cis on cooldown. Wait {seconds} second(s).");
@@ -165,7 +163,6 @@ public class ConfigManager {
     // Phonetic matching
     public boolean isPhoneticEnabled() { return phoneticEnabled; }
     public double getPhoneticThreshold() { return phoneticThreshold; }
-    public Map<String, String> getProfanitySoundexMap() { return profanitySoundexMap; }
 
     // ML Toxicity detection
     public boolean isMlToxicityEnabled() { return mlToxicityEnabled; }

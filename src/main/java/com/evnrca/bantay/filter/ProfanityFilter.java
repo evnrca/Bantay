@@ -23,7 +23,6 @@ public class ProfanityFilter {
     private final ConfigManager config;
     private final Bantay plugin;
 
-    private final Map<String, Pattern> compiledWordPatterns = new ConcurrentHashMap<>();
     private final List<Pattern> filipinoRegexPatterns = new ArrayList<>();
     private final List<Pattern> englishRegexPatterns = new ArrayList<>();
     private final Map<String, String> aliasMap = new ConcurrentHashMap<>();
@@ -47,7 +46,6 @@ public class ProfanityFilter {
     }
 
     public void reload() {
-        compiledWordPatterns.clear();
         filipinoRegexPatterns.clear();
         englishRegexPatterns.clear();
         aliasMap.clear();
@@ -109,21 +107,6 @@ public class ProfanityFilter {
         }
     }
 
-    private String buildWordPattern(String word) {
-        StringBuilder sb = new StringBuilder();
-        String[] parts = word.toLowerCase().split("\\s+");
-
-        for (int i = 0; i < parts.length; i++) {
-            String part = parts[i];
-            if (i > 0) {
-                sb.append("\\s*");
-            }
-            sb.append(Pattern.quote(part));
-        }
-
-        return "\\b" + sb.toString() + "\\b";
-    }
-
     public FilterResult filter(String message, Player player) {
         if (player != null && player.hasPermission("bantay.bypass")) {
             return new FilterResult(message, false, Collections.emptyList());
@@ -142,7 +125,6 @@ public class ProfanityFilter {
 
         List<MatchInfo> matches = new ArrayList<>();
 
-        matches.addAll(matchWordPatterns(workingMessage));
         matches.addAll(matchRegexPatterns(workingMessage, filipinoRegexPatterns, "filipino-regex"));
         matches.addAll(matchRegexPatterns(workingMessage, englishRegexPatterns, "english-regex"));
 
@@ -180,17 +162,6 @@ public class ProfanityFilter {
         }
 
         return new FilterResult(censoredMessage, true, matches);
-    }
-
-    private List<MatchInfo> matchWordPatterns(String message) {
-        List<MatchInfo> matches = new ArrayList<>();
-        for (Map.Entry<String, Pattern> entry : compiledWordPatterns.entrySet()) {
-            Matcher matcher = entry.getValue().matcher(message);
-            while (matcher.find()) {
-                matches.add(new MatchInfo(matcher.start(), matcher.end(), matcher.group(), entry.getKey()));
-            }
-        }
-        return matches;
     }
 
     private List<MatchInfo> matchRegexPatterns(String message, List<Pattern> patterns, String source) {
