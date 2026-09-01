@@ -4,17 +4,8 @@ import com.evnrca.bantay.Bantay;
 import com.evnrca.bantay.config.ConfigManager;
 import org.bukkit.entity.Player;
 
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
-import java.time.Duration;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,20 +19,9 @@ public class ProfanityFilter {
     private final Map<String, String> aliasMap = new ConcurrentHashMap<>();
     private final Map<String, String> profanitySoundexMap = new ConcurrentHashMap<>();
 
-    private final HttpClient httpClient;
-    private final ExecutorService mlExecutor;
-
     public ProfanityFilter(ConfigManager config, Bantay plugin) {
         this.config = config;
         this.plugin = plugin;
-        this.httpClient = HttpClient.newBuilder()
-                .connectTimeout(Duration.ofMillis(config.getMlToxicityTimeoutMs()))
-                .build();
-        this.mlExecutor = Executors.newSingleThreadExecutor(r -> {
-            Thread t = new Thread(r, "Bantay-ML-Toxicity");
-            t.setDaemon(true);
-            return t;
-        });
         reload();
     }
 
@@ -133,9 +113,6 @@ public class ProfanityFilter {
         }
 
         if (matches.isEmpty()) {
-            if (config.isMlToxicityEnabled()) {
-                return checkMlToxicityAsync(originalMessage, workingMessage, matches);
-            }
             return new FilterResult(originalMessage, false, Collections.emptyList());
         }
 
@@ -155,13 +132,7 @@ public class ProfanityFilter {
             offset += replacement.length() - (match.end - match.start);
         }
 
-        String censoredMessage = censored.toString();
-
-        if (config.isMlToxicityEnabled()) {
-            return checkMlToxicityAsync(originalMessage, censoredMessage, matches);
-        }
-
-        return new FilterResult(censoredMessage, true, matches);
+        return new FilterResult(censored.toString(), true, matches);
     }
 
     private List<MatchInfo> matchRegexPatterns(String message, List<Pattern> patterns, String source) {
@@ -239,113 +210,6 @@ public class ProfanityFilter {
             if (s1.charAt(i) == s2.charAt(i)) matches++;
         }
         return (double) matches / Math.max(s1.length(), s2.length());
-    }
-
-    private FilterResult checkMlToxicityAsync(String originalMessage, String currentMessage, List<MatchInfo> currentMatches) {
-        CompletableFuture<FilterResult> future = CompletableFuture.supplyAsync(() -> {
-            try {
-                return callMlToxicityApi(originalMessage, currentMessage, currentMatches);
-            } catch (Exception e) {
-                plugin.getLogger().warning("ML toxicity check failed: " + e.getMessage());
-                return new FilterResult(currentMessage, !currentMatches.isEmpty(), currentMatches);
-            }
-        }, mlExecutor);
-
-        try {
-            return future.get(config.getMlToxicityTimeoutMs(), java.util.concurrent.TimeUnit.MILLISECONDS);
-        } catch (Exception e) {
-            plugin.getLogger().warning("ML toxicity check timeout: " + e.getMessage());
-            return new FilterResult(currentMessage, !currentMatches.isEmpty(), currentMatches);
-        }
-    }
-
-    private FilterResult callMlToxicityApi(String originalMessage, String currentMessage, List<MatchInfo> currentMatches) throws Exception {
-        String jsonBody = String.format("{\"text\":%s}", toJsonString(originalMessage));
-
-        HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
-                .uri(URI.create(config.getMlToxicityEndpoint()))
-                .header("Content-Type", "application/json")
-                .timeout(Duration.ofMillis(config.getMlToxicityTimeoutMs()))
-                .POST(HttpRequest.BodyPublishers.ofString(jsonBody, StandardCharsets.UTF_8));
-
-        String apiKeyHeader = config.getMlApiKeyHeader();
-        String apiKey = config.getMlApiKey();
-        if (!apiKeyHeader.isEmpty() && !apiKey.isEmpty()) {
-            requestBuilder.header(apiKeyHeader, apiKey);
-        }
-
-        HttpRequest request = requestBuilder.build();
-
-        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-        if (response.statusCode() != 200) {
-            plugin.getLogger().warning("ML toxicity API returned status: " + response.statusCode());
-            return new FilterResult(currentMessage, !currentMatches.isEmpty(), currentMatches);
-        }
-
-        return parseMlResponse(response.body(), originalMessage, currentMessage, currentMatches);
-    }
-
-    private String toJsonString(String input) {
-        return "\"" + input.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t") + "\"";
-    }
-
-    private FilterResult parseMlResponse(String json, String originalMessage, String currentMessage, List<MatchInfo> currentMatches) {
-        try {
-            boolean toxic = false;
-            double score = 0.0;
-            List<String> labels = new ArrayList<>();
-
-            int toxicIdx = json.indexOf("\"toxic\"");
-            if (toxicIdx >= 0) {
-                int colonIdx = json.indexOf(':', toxicIdx);
-                String val = json.substring(colonIdx + 1).trim();
-                toxic = val.startsWith("true");
-            }
-
-            int scoreIdx = json.indexOf("\"score\"");
-            if (scoreIdx >= 0) {
-                int colonIdx = json.indexOf(':', scoreIdx);
-                int commaIdx = json.indexOf(',', colonIdx);
-                if (commaIdx < 0) commaIdx = json.indexOf('}', colonIdx);
-                String val = json.substring(colonIdx + 1, commaIdx).trim();
-                score = Double.parseDouble(val);
-            }
-
-            int labelsIdx = json.indexOf("\"labels\"");
-            if (labelsIdx >= 0) {
-                int bracketIdx = json.indexOf('[', labelsIdx);
-                int endBracketIdx = json.indexOf(']', bracketIdx);
-                if (bracketIdx >= 0 && endBracketIdx > bracketIdx) {
-                    String labelsStr = json.substring(bracketIdx + 1, endBracketIdx);
-                    for (String label : labelsStr.split(",")) {
-                        label = label.trim().replace("\"", "");
-                        if (!label.isEmpty()) labels.add(label);
-                    }
-                }
-            }
-
-            boolean shouldCensor = toxic && score >= config.getMlToxicityThreshold();
-            if (shouldCensor && !config.getMlToxicLabels().isEmpty()) {
-                shouldCensor = labels.stream().anyMatch(config.getMlToxicLabels()::contains);
-            }
-
-            if (shouldCensor) {
-                List<MatchInfo> allMatches = new ArrayList<>(currentMatches);
-                allMatches.add(new MatchInfo(0, originalMessage.length(), originalMessage, "ml-toxicity:score=" + score + ",labels=" + labels));
-                return new FilterResult(censorFullMessage(currentMessage), true, allMatches);
-            }
-
-            return new FilterResult(currentMessage, !currentMatches.isEmpty(), currentMatches);
-        } catch (Exception e) {
-            plugin.getLogger().warning("Failed to parse ML response: " + e.getMessage());
-            return new FilterResult(currentMessage, !currentMatches.isEmpty(), currentMatches);
-        }
-    }
-
-    private String censorFullMessage(String message) {
-        int length = config.isFixedLengthCensor() ? 4 : message.length();
-        return String.valueOf(config.getCensorChar()).repeat(length);
     }
 
     private String normalizeLeetspeak(String input) {

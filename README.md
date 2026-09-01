@@ -32,13 +32,6 @@ All options are documented in the generated `config.yml`. Below is a summary tab
 | `filter.regex-patterns.english` | *(31 patterns)* | Regex patterns for English profanity (replaces word list) |
 | `filter.phonetic-matching.enabled` | `false` | Enable Soundex phonetic matching for misspellings |
 | `filter.phonetic-matching.threshold` | `0.85` | Minimum phonetic similarity (0.0-1.0) |
-| `filter.ml-toxicity.enabled` | `false` | Enable ML toxicity detection (external API) |
-| `filter.ml-toxicity.endpoint` | `http://localhost:8000/toxicity` | API endpoint URL |
-| `filter.ml-toxicity.threshold` | `0.8` | Minimum toxicity score (0.0-1.0) to censor |
-| `filter.ml-toxicity.toxic-labels` | `["profanity","hate","harassment"]` | Labels that trigger censorship |
-| `filter.ml-toxicity.timeout-ms` | `2000` | API request timeout in milliseconds |
-| `filter.ml-toxicity.api-key-header` | `""` | Optional API key header name |
-| `filter.ml-toxicity.api-key` | `""` | Optional API key value |
 | `filter.censor-char` | `*` | Character used for censoring |
 | `filter.fixed-length-censor` | `false` | If true, always output exactly 4 censor chars |
 | `filter.notify-staff` | `false` | Silently notify online `bantay.admin` players when censored |
@@ -132,22 +125,6 @@ filter:
     threshold: 0.85
 ```
 
-### Enable ML toxicity detection
-
-```yaml
-filter:
-  ml-toxicity:
-    enabled: true
-    endpoint: "https://your-api.example.com/toxicity"
-    threshold: 0.8
-    toxic-labels:
-      - "profanity"
-      - "hate"
-      - "harassment"
-    api-key-header: "Authorization"
-    api-key: "Bearer YOUR_API_KEY"
-```
-
 ### Stricter cooldown on `/tpa`
 
 ```yaml
@@ -204,7 +181,6 @@ The compiled JAR will be in `target/Bantay-1.0.0.jar`.
 - **Alias mapping**: custom shorthand→root mappings for Filipino texting abbreviations (e.g., `tgna`→`tangina`).
 - **Repeated character stripping**: collapses 3+ repeated characters before matching (e.g., `tanginaaaa`→`tangina`).
 - **Phonetic matching** (optional, Soundex): compares phonetic codes of words against profanity list; catches misspellings like `tgnina`→`tangina`.
-- **ML toxicity detection** (optional, external API): async HTTP POST to configured endpoint; censors entire message if toxic.
 
 ### Default Regex Patterns
 

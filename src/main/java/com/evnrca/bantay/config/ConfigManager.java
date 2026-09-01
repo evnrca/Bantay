@@ -31,15 +31,6 @@ public class ConfigManager {
     private boolean phoneticEnabled;
     private double phoneticThreshold;
 
-    // ML Toxicity detection
-    private boolean mlToxicityEnabled;
-    private String mlToxicityEndpoint;
-    private int mlToxicityTimeoutMs;
-    private double mlToxicityThreshold;
-    private List<String> mlToxicLabels;
-    private String mlApiKeyHeader;
-    private String mlApiKey;
-
     // Chat cooldown
     private boolean chatCooldownEnabled;
     private int chatCooldownSeconds;
@@ -91,15 +82,6 @@ public class ConfigManager {
         // Phonetic matching
         phoneticEnabled = config.getBoolean("filter.phonetic-matching.enabled", false);
         phoneticThreshold = config.getDouble("filter.phonetic-matching.threshold", 0.85);
-
-        // ML Toxicity detection
-        mlToxicityEnabled = config.getBoolean("filter.ml-toxicity.enabled", false);
-        mlToxicityEndpoint = config.getString("filter.ml-toxicity.endpoint", "http://localhost:8000/toxicity");
-        mlToxicityTimeoutMs = config.getInt("filter.ml-toxicity.timeout-ms", 2000);
-        mlToxicityThreshold = config.getDouble("filter.ml-toxicity.threshold", 0.8);
-        mlToxicLabels = config.getStringList("filter.ml-toxicity.toxic-labels");
-        mlApiKeyHeader = config.getString("filter.ml-toxicity.api-key-header", "");
-        mlApiKey = config.getString("filter.ml-toxicity.api-key", "");
 
         // Aliases
         aliases = new ConcurrentHashMap<>();
@@ -167,15 +149,6 @@ public class ConfigManager {
     // Phonetic matching
     public boolean isPhoneticEnabled() { return phoneticEnabled; }
     public double getPhoneticThreshold() { return phoneticThreshold; }
-
-    // ML Toxicity detection
-    public boolean isMlToxicityEnabled() { return mlToxicityEnabled; }
-    public String getMlToxicityEndpoint() { return mlToxicityEndpoint; }
-    public int getMlToxicityTimeoutMs() { return mlToxicityTimeoutMs; }
-    public double getMlToxicityThreshold() { return mlToxicityThreshold; }
-    public List<String> getMlToxicLabels() { return mlToxicLabels; }
-    public String getMlApiKeyHeader() { return mlApiKeyHeader; }
-    public String getMlApiKey() { return mlApiKey; }
 
     public boolean isChatCooldownEnabled() { return chatCooldownEnabled; }
     public int getChatCooldownSeconds() { return chatCooldownSeconds; }
