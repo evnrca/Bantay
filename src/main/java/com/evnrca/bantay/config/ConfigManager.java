@@ -16,8 +16,6 @@ public class ConfigManager {
     // Filter settings
     private boolean filipinoEnabled;
     private boolean englishEnabled;
-    private List<String> filipinoWords;
-    private List<String> englishWords;
     private boolean normalizeLeetspeak;
     private Map<String, String> aliases;
     private boolean stripRepeatedChars;
@@ -79,8 +77,6 @@ public class ConfigManager {
         // Filter
         filipinoEnabled = config.getBoolean("filter.filipino-enabled", true);
         englishEnabled = config.getBoolean("filter.english-enabled", true);
-        filipinoWords = config.getStringList("filter.filipino-words");
-        englishWords = config.getStringList("filter.english-words");
         normalizeLeetspeak = config.getBoolean("filter.normalize-leetspeak", true);
         stripRepeatedChars = config.getBoolean("filter.strip-repeated-chars", true);
         censorChar = config.getString("filter.censor-char", "*").charAt(0);
@@ -155,8 +151,6 @@ public class ConfigManager {
     // Getters
     public boolean isFilipinoEnabled() { return filipinoEnabled; }
     public boolean isEnglishEnabled() { return englishEnabled; }
-    public List<String> getFilipinoWords() { return filipinoWords; }
-    public List<String> getEnglishWords() { return englishWords; }
     public boolean isNormalizeLeetspeak() { return normalizeLeetspeak; }
     public Map<String, String> getAliases() { return aliases; }
     public boolean isStripRepeatedChars() { return stripRepeatedChars; }

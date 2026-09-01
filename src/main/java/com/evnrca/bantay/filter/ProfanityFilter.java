@@ -57,14 +57,12 @@ public class ProfanityFilter {
             aliasMap.putAll(config.getAliases());
         }
 
+        // Build phonetic map from regex patterns (extract base words)
+        if (config.isPhoneticEnabled()) {
+            buildPhoneticMapFromRegex();
+        }
+
         if (config.isFilipinoEnabled()) {
-            for (String word : config.getFilipinoWords()) {
-                String pattern = buildWordPattern(word);
-                compiledWordPatterns.put(pattern, Pattern.compile(pattern, Pattern.CASE_INSENSITIVE));
-                if (config.isPhoneticEnabled()) {
-                    profanitySoundexMap.put(soundex(word.toLowerCase()), word.toLowerCase());
-                }
-            }
             for (String regex : config.getFilipinoRegexPatterns()) {
                 try {
                     filipinoRegexPatterns.add(Pattern.compile(regex, Pattern.CASE_INSENSITIVE));
@@ -75,13 +73,6 @@ public class ProfanityFilter {
         }
 
         if (config.isEnglishEnabled()) {
-            for (String word : config.getEnglishWords()) {
-                String pattern = buildWordPattern(word);
-                compiledWordPatterns.put(pattern, Pattern.compile(pattern, Pattern.CASE_INSENSITIVE));
-                if (config.isPhoneticEnabled()) {
-                    profanitySoundexMap.put(soundex(word.toLowerCase()), word.toLowerCase());
-                }
-            }
             for (String regex : config.getEnglishRegexPatterns()) {
                 try {
                     englishRegexPatterns.add(Pattern.compile(regex, Pattern.CASE_INSENSITIVE));
@@ -89,6 +80,25 @@ public class ProfanityFilter {
                     plugin.getLogger().warning("Invalid English regex pattern: " + regex);
                 }
             }
+        }
+    }
+
+    private void buildPhoneticMapFromRegex() {
+        // Predefined base words for phonetic matching (extracted from default regex patterns)
+        String[] filipinoBaseWords = {
+            "putangina", "putang ina", "tangina", "tang ina", "gago", "gaga", "ulol",
+            "bobo", "tanga", "punyeta", "leche", "pakshet", "pakyu", "hayop", "hayup",
+            "kupal", "tarantado", "lintik", "peste", "pucha", "puta", "inutil", "sira ulo"
+        };
+        String[] englishBaseWords = {
+            "damn", "hell", "shit", "fuck", "bitch", "ass", "crap"
+        };
+
+        for (String word : filipinoBaseWords) {
+            profanitySoundexMap.put(soundex(word.toLowerCase()), word.toLowerCase());
+        }
+        for (String word : englishBaseWords) {
+            profanitySoundexMap.put(soundex(word.toLowerCase()), word.toLowerCase());
         }
     }
 

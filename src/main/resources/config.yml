@@ -14,45 +14,6 @@ filter:
   # This is a secondary, optional filter - server owners can extend the list
   english-enabled: true
 
-  # List of Filipino profanity words/phrases to filter
-  # Add or remove words as needed for your community
-  # Matching is case-insensitive and handles spaced variants (e.g., "putang ina" catches "putangina")
-  filipino-words:
-    - "putangina"
-    - "putang ina"
-    - "tangina"
-    - "tang ina"
-    - "gago"
-    - "gaga"
-    - "ulol"
-    - "bobo"
-    - "tanga"
-    - "punyeta"
-    - "leche"
-    - "pakshet"
-    - "pakyu"
-    - "hayop"
-    - "hayup"
-    - "kupal"
-    - "tarantado"
-    - "lintik"
-    - "peste"
-    - "pucha"
-    - "puta"
-    - "inutil"
-    - "sira ulo"
-
-  # List of English profanity words to filter (secondary/optional)
-  # Keep this short - server owners should extend per their community standards
-  english-words:
-    - "damn"
-    - "hell"
-    - "shit"
-    - "fuck"
-    - "bitch"
-    - "ass"
-    - "crap"
-
   # Normalize common leetspeak substitutions before matching
   # When true, converts @/4->a, 3->e, 1/!->i, 0->o, $->s
   # Also applies custom aliases from the aliases map below
@@ -77,17 +38,73 @@ filter:
   # e.g., "tanginaaaa" -> "tangina", "bobo!!!" -> "bobo"
   strip-repeated-chars: true
 
-  # Regex patterns for complex evasion detection
-  # Each entry is a regex pattern (case-insensitive)
-  # Example: "(p|P)[@4a]+(t|T)[@4a]+(n|N)[gG]+(i|I)[!1i]+(n|N)[@4a]+" catches "p@t@ng1n@"
+  # Regex patterns for profanity detection
+  # These replace the old word lists - regex handles variants, leetspeak, spacing
   regex-patterns:
-    filipino: []
-    english: []
+    filipino:
+      # putangina / putang ina / tangina / tang ina variants
+      - "(p|P)[uU]*[tT]+[@4aA]+[nN]+[gG]+[@4aA]+[iI!1]+[nN]+[@4aA]+"
+      - "(p|P)[uU]*[tT]+[@4aA]+[nN]+[gG]+\\s*[iI!1]+[nN]+[@4aA]+"
+      - "(t|T)[@4aA]+[nN]+[gG]+[@4aA]+[iI!1]+[nN]+[@4aA]+"
+      - "(t|T)[@4aA]+[nN]+[gG]+\\s*[iI!1]+[nN]+[@4aA]+"
+      # gago/gaga
+      - "(g|G)[@4aA]+[gG]+[@4aA]+"
+      # ulol
+      - "(u|U)[lL]+[@0oO]+[lL]+"
+      # bobo
+      - "(b|B)[@0oO]+[bB]+[@0oO]+"
+      # tanga
+      - "(t|T)[@4aA]+[nN]+[gG]+[@4aA]+"
+      # punyeta
+      - "(p|P)[uU]+[nN]+[yY]+[eE3]+[tT]+[@4aA]+"
+      # leche
+      - "(l|L)[eE3]+[cC]+[hH]+[eE3]+"
+      # pakshet
+      - "(p|P)[@4aA]+[kK]+[sS$]+[hH]+[eE3]+[tT]+"
+      # pakyu
+      - "(p|P)[@4aA]+[kK]+[yY]+[uU]+"
+      # hayop/hayup
+      - "(h|H)[@4aA]+[yY]+[@0oO]+[pP]+"
+      - "(h|H)[@4aA]+[yY]+[uU]+[pP]+"
+      # kupal
+      - "(k|K)[uU]+[pP]+[@4aA]+[lL]+"
+      # tarantado
+      - "(t|T)[@4aA]+[rR]+[@4aA]+[nN]+[tT]+[@4aA]+[dD]+[@0oO]+"
+      # lintik
+      - "(l|L)[iI!1]+[nN]+[tT]+[iI!1]+[kK]+"
+      # peste
+      - "(p|P)[eE3]+[sS$]+[tT]+[eE3]+"
+      # pucha
+      - "(p|P)[uU]+[cC]+[hH]+[@4aA]+"
+      # puta
+      - "(p|P)[uU]+[tT]+[@4aA]+"
+      # inutil
+      - "(iI!1)+[nN]+[uU]+[tT]+[iI!1]+[lL]+"
+      # sira ulo
+      - "(s|S)[iI!1]+[rR]+[@4aA]+\\s*(u|U)[lL]+[@0oO]+"
+    english:
+      # damn
+      - "(d|D)[@4aA]+[mM]+[nN]+"
+      # hell
+      - "(h|H)[eE3]+[lL]+[lL]+"
+      # shit
+      - "(s|S)[hH]+[iI!1]+[tT]+"
+      # fuck
+      - "(f|F)[uU]+[cC]+[kK]+"
+      # bitch
+      - "(b|B)[iI!1]+[tT]+[cC]+[hH]+"
+      # ass
+      - "(a|A)[sS$]+[sS$]+"
+      # crap
+      - "(cC)+[rR]+[@4aA]+[pP]+"
 
   # Phonetic matching (Soundex) for catching misspellings
   # When enabled, compares phonetic codes of words against profanity list
   # May produce false positives - use with caution
   phonetic-matching:
+    enabled: false
+    # Minimum phonetic similarity threshold (0.0-1.0)
+    threshold: 0.85
     enabled: false
     # Minimum phonetic similarity threshold (0.0-1.0)
     threshold: 0.85
