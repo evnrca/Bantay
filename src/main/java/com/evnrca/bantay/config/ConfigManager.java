@@ -127,21 +127,21 @@ public class ConfigManager {
             exemptCommands.addAll(config.getStringList("cooldown.command.exempt-commands"));
         }
 
-        // Messages
-        prefix = colorize(config.getString("messages.prefix", "&8[&cBantay&8] &r"));
-        chatCooldownMsg = colorize(config.getString("messages.chat-cooldown", "&cPlease wait {seconds} second(s) before chatting again."));
-        commandCooldownMsg = colorize(config.getString("messages.command-cooldown", "&cCommand &e{command} &cis on cooldown. Wait {seconds} second(s)."));
-        reloadSuccessMsg = colorize(config.getString("messages.reload-success", "&aConfiguration reloaded successfully!"));
-        bypassEnabledMsg = colorize(config.getString("messages.bypass-enabled", "&aBypass enabled for &e{player}&a."));
-        bypassDisabledMsg = colorize(config.getString("messages.bypass-disabled", "&cBypass disabled for &e{player}&c."));
-        playerNotFoundMsg = colorize(config.getString("messages.player-not-found", "&cPlayer '&e{player}&c' not found."));
-        helpHeader = colorize(config.getString("messages.help-header", "&8&m----------- &cBantay &8&m-----------"));
-        helpReload = colorize(config.getString("messages.help-reload", "&e/bantay reload &7- Reload configuration"));
-        helpBypass = colorize(config.getString("messages.help-bypass", "&e/bantay bypass <player> &7- Toggle bypass for a player"));
-        helpVersion = colorize(config.getString("messages.help-version", "&e/bantay version &7- Show plugin version"));
-        helpHelp = colorize(config.getString("messages.help-help", "&e/bantay help &7- Show this help message"));
-        helpFooter = colorize(config.getString("messages.help-footer", "&8&m--------------------------------"));
-        versionMsg = colorize(config.getString("messages.version", "&eBantay &fv{version} &7by &fevnrca"));
+        // Messages (hardcoded - not configurable)
+        prefix = colorize("&8[&cBantay&8] &r");
+        chatCooldownMsg = colorize("&cPlease wait {seconds} second(s) before chatting again.");
+        commandCooldownMsg = colorize("&cCommand &e{command} &cis on cooldown. Wait {seconds} second(s).");
+        reloadSuccessMsg = colorize("&aConfiguration reloaded successfully!");
+        bypassEnabledMsg = colorize("&aBypass enabled for &e{player}&a.");
+        bypassDisabledMsg = colorize("&cBypass disabled for &e{player}&c.");
+        playerNotFoundMsg = colorize("&cPlayer '&e{player}&c' not found.");
+        helpHeader = colorize("&8&m----------- &cBantay &8&m-----------");
+        helpReload = colorize("&e/bantay reload &7- Reload configuration");
+        helpBypass = colorize("&e/bantay bypass <player> &7- Toggle bypass for a player");
+        helpVersion = colorize("&e/bantay version &7- Show plugin version");
+        helpHelp = colorize("&e/bantay help &7- Show this help message");
+        helpFooter = colorize("&8&m--------------------------------");
+        versionMsg = colorize("&eBantay &fv{version} &7by &fevnrca");
     }
 
     private String colorize(String input) {

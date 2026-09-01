@@ -211,6 +211,11 @@ cooldown:
 # ==============================================================================
 # All messages support &-style color codes (e.g., &c = red, &a = green, &e = yellow)
 # Placeholders: {seconds} = remaining cooldown, {command} = command name
+#
+# NOTE: The following messages are hardcoded and NOT configurable:
+#   reload-success, bypass-enabled, bypass-disabled, player-not-found,
+#   help-header, help-reload, help-bypass, help-version, help-help, help-footer, version
+# Only prefix, chat-cooldown, and command-cooldown can be customized here.
 
 messages:
   # Prefix for all plugin messages
@@ -221,24 +226,3 @@ messages:
 
   # Shown when a player tries to use a command during cooldown
   command-cooldown: "&cCommand &e{command} &cis on cooldown. Wait {seconds} second(s)."
-
-  # Shown when config is reloaded successfully
-  reload-success: "&aConfiguration reloaded successfully!"
-
-  # Shown when bypass is toggled for a player
-  bypass-enabled: "&aBypass enabled for &e{player}&a."
-  bypass-disabled: "&cBypass disabled for &e{player}&c."
-
-  # Shown when a player is not found for bypass command
-  player-not-found: "&cPlayer '&e{player}&c' not found."
-
-  # Help message header
-  help-header: "&8&m----------- &cBantay &8&m-----------"
-  help-reload: "&e/bantay reload &7- Reload configuration"
-  help-bypass: "&e/bantay bypass <player> &7- Toggle bypass for a player"
-  help-version: "&e/bantay version &7- Show plugin version"
-  help-help: "&e/bantay help &7- Show this help message"
-  help-footer: "&8&m--------------------------------"
-
-  # Version message (supports {version} placeholder)
-  version: "&eBantay &fv{version} &7by &fevnrca"
