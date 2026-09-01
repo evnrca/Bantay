@@ -29,7 +29,7 @@ All options are documented in the generated `config.yml`. Below is a summary tab
 | `filter.aliases` | *(see config)* | Custom shorthand→root mappings (e.g., `tgna`→`tangina`) |
 | `filter.strip-repeated-chars` | `true` | Collapse 3+ repeated chars (e.g., `tanginaaaa`→`tangina`) |
 | `filter.regex-patterns.filipino` | *(24 patterns)* | Regex patterns for Filipino profanity (replaces word list) |
-| `filter.regex-patterns.english` | *(7 patterns)* | Regex patterns for English profanity (replaces word list) |
+| `filter.regex-patterns.english` | *(31 patterns)* | Regex patterns for English profanity (replaces word list) |
 | `filter.phonetic-matching.enabled` | `false` | Enable Soundex phonetic matching for misspellings |
 | `filter.phonetic-matching.threshold` | `0.85` | Minimum phonetic similarity (0.0-1.0) |
 | `filter.ml-toxicity.enabled` | `false` | Enable ML toxicity detection (external API) |
@@ -63,22 +63,31 @@ All options are documented in the generated `config.yml`. Below is a summary tab
 
 All messages support `&`-style color codes (`&c`=red, `&a`=green, `&e`=yellow, etc.).
 
+**Configurable messages:**
+
 | Option | Default |
 |--------|---------|
 | `messages.prefix` | `&8[&cBantay&8] &r` |
 | `messages.chat-cooldown` | `&cPlease wait {seconds} second(s) before chatting again.` |
 | `messages.command-cooldown` | `&cCommand &e{command} &cis on cooldown. Wait {seconds} second(s).` |
-| `messages.reload-success` | `&aConfiguration reloaded successfully!` |
-| `messages.bypass-enabled` | `&aBypass enabled for &e{player}&a.` |
-| `messages.bypass-disabled` | `&cBypass disabled for &e{player}&c.` |
-| `messages.player-not-found` | `&cPlayer '&e{player}&c' not found.` |
-| `messages.help-header` | `&8&m----------- &cBantay &8&m-----------` |
-| `messages.help-reload` | `&e/bantay reload &7- Reload configuration` |
-| `messages.help-bypass` | `&e/bantay bypass <player> &7- Toggle bypass for a player` |
-| `messages.help-version` | `&e/bantay version &7- Show plugin version` |
-| `messages.help-help` | `&e/bantay help &7- Show this help message` |
-| `messages.help-footer` | `&8&m--------------------------------` |
-| `messages.version` | `&eBantay &fv{version} &7by &fevnrca` |
+
+**Hardcoded messages (NOT configurable in config.yml):**
+
+| Message | Default |
+|---------|---------|
+| `reload-success` | `&aConfiguration reloaded successfully!` |
+| `bypass-enabled` | `&aBypass enabled for &e{player}&a.` |
+| `bypass-disabled` | `&cBypass disabled for &e{player}&c.` |
+| `player-not-found` | `&cPlayer '&e{player}&c' not found.` |
+| `help-header` | `&8&m----------- &cBantay &8&m-----------` |
+| `help-reload` | `&e/bantay reload &7- Reload configuration` |
+| `help-bypass` | `&e/bantay bypass <player> &7- Toggle bypass for a player` |
+| `help-version` | `&e/bantay version &7- Show plugin version` |
+| `help-help` | `&e/bantay help &7- Show this help message` |
+| `help-footer` | `&8&m--------------------------------` |
+| `version` | `&eBantay &fv{version} &7by &fevnrca` |
+
+> **Note**: Admin/system messages are hardcoded to ensure consistency. Only `prefix`, `chat-cooldown`, and `command-cooldown` can be customized via config.yml.
 
 ## Permissions
 
@@ -207,7 +216,7 @@ The compiled JAR will be in `target/Bantay-1.0.0.jar`.
 
 **Filipino (24 patterns):** Covers `putangina`, `putang ina`, `tangina`, `tang ina`, `gago`, `gaga`, `ulol`, `bobo`, `tanga`, `punyeta`, `leche`, `pakshet`, `pakyu`, `hayop`, `hayup`, `kupal`, `tarantado`, `lintik`, `peste`, `pucha`, `puta`, `inutil`, `sira ulo` — with leetspeak and spacing variants built-in.
 
-**English (7 patterns):** Covers `damn`, `hell`, `shit`, `fuck`, `bitch`, `ass`, `crap` — with leetspeak variants.
+**English (31 patterns):** Covers `damn`, `dammit`, `hell`, `shit`, `shitty`, `bullshit`, `fuck`, `fucker`, `fucking`, `motherfucker`, `bitch`, `bitches`, `ass`, `asshole`, `asshat`, `jackass`, `dumbass`, `crap`, `crappy`, `piss`, `pissing`, `pissed`, `cock`, `cunt`, `twat`, `pussy`, `dick`, `prick`, `whore`, `slut`, `hoe`, `skank`, `bastard`, `bollocks`, `bugger`, `wanker`, `tosser`, `nigger`, `nigga`, `N1GGA` — with leetspeak, suffixes, and phrase variants built-in.
 
 ### Cooldowns
 
