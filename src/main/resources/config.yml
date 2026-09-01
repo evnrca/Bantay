@@ -77,6 +77,43 @@ filter:
   # e.g., "tanginaaaa" -> "tangina", "bobo!!!" -> "bobo"
   strip-repeated-chars: true
 
+  # Regex patterns for complex evasion detection
+  # Each entry is a regex pattern (case-insensitive)
+  # Example: "(p|P)[@4a]+(t|T)[@4a]+(n|N)[gG]+(i|I)[!1i]+(n|N)[@4a]+" catches "p@t@ng1n@"
+  regex-patterns:
+    filipino: []
+    english: []
+
+  # Phonetic matching (Soundex) for catching misspellings
+  # When enabled, compares phonetic codes of words against profanity list
+  # May produce false positives - use with caution
+  phonetic-matching:
+    enabled: false
+    # Minimum phonetic similarity threshold (0.0-1.0)
+    threshold: 0.85
+
+  # Machine Learning toxicity detection (external API)
+  # Requires a compatible toxicity classification endpoint
+  # Off by default - enable and configure endpoint to use
+  ml-toxicity:
+    enabled: false
+    # API endpoint URL (POST request with JSON body: {"text": "message"})
+    # Expected response: {"toxic": true, "score": 0.95, "labels": ["profanity", "hate"]}
+    endpoint: "http://localhost:8000/toxicity"
+    # Timeout in milliseconds
+    timeout-ms: 2000
+    # Minimum toxicity score (0.0-1.0) to trigger censorship
+    threshold: 0.8
+    # Labels that trigger censorship (empty = all toxic labels)
+    # Common labels: profanity, hate, harassment, violence, sexual
+    toxic-labels:
+      - "profanity"
+      - "hate"
+      - "harassment"
+    # API key header (optional)
+    api-key-header: ""
+    api-key: ""
+
   # Character used for censoring matched words
   censor-char: "*"
 

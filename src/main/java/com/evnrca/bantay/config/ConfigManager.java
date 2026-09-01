@@ -25,6 +25,24 @@ public class ConfigManager {
     private boolean fixedLengthCensor;
     private boolean notifyStaff;
 
+    // Regex patterns
+    private List<String> filipinoRegexPatterns;
+    private List<String> englishRegexPatterns;
+
+    // Phonetic matching
+    private boolean phoneticEnabled;
+    private double phoneticThreshold;
+    private Map<String, String> profanitySoundexMap;
+
+    // ML Toxicity detection
+    private boolean mlToxicityEnabled;
+    private String mlToxicityEndpoint;
+    private int mlToxicityTimeoutMs;
+    private double mlToxicityThreshold;
+    private List<String> mlToxicLabels;
+    private String mlApiKeyHeader;
+    private String mlApiKey;
+
     // Chat cooldown
     private boolean chatCooldownEnabled;
     private int chatCooldownSeconds;
@@ -68,6 +86,24 @@ public class ConfigManager {
         censorChar = config.getString("filter.censor-char", "*").charAt(0);
         fixedLengthCensor = config.getBoolean("filter.fixed-length-censor", false);
         notifyStaff = config.getBoolean("filter.notify-staff", false);
+
+        // Regex patterns
+        filipinoRegexPatterns = config.getStringList("filter.regex-patterns.filipino");
+        englishRegexPatterns = config.getStringList("filter.regex-patterns.english");
+
+        // Phonetic matching
+        phoneticEnabled = config.getBoolean("filter.phonetic-matching.enabled", false);
+        phoneticThreshold = config.getDouble("filter.phonetic-matching.threshold", 0.85);
+        profanitySoundexMap = new ConcurrentHashMap<>();
+
+        // ML Toxicity detection
+        mlToxicityEnabled = config.getBoolean("filter.ml-toxicity.enabled", false);
+        mlToxicityEndpoint = config.getString("filter.ml-toxicity.endpoint", "http://localhost:8000/toxicity");
+        mlToxicityTimeoutMs = config.getInt("filter.ml-toxicity.timeout-ms", 2000);
+        mlToxicityThreshold = config.getDouble("filter.ml-toxicity.threshold", 0.8);
+        mlToxicLabels = config.getStringList("filter.ml-toxicity.toxic-labels");
+        mlApiKeyHeader = config.getString("filter.ml-toxicity.api-key-header", "");
+        mlApiKey = config.getString("filter.ml-toxicity.api-key", "");
 
         // Aliases
         aliases = new ConcurrentHashMap<>();
@@ -127,6 +163,24 @@ public class ConfigManager {
     public char getCensorChar() { return censorChar; }
     public boolean isFixedLengthCensor() { return fixedLengthCensor; }
     public boolean isNotifyStaff() { return notifyStaff; }
+
+    // Regex patterns
+    public List<String> getFilipinoRegexPatterns() { return filipinoRegexPatterns; }
+    public List<String> getEnglishRegexPatterns() { return englishRegexPatterns; }
+
+    // Phonetic matching
+    public boolean isPhoneticEnabled() { return phoneticEnabled; }
+    public double getPhoneticThreshold() { return phoneticThreshold; }
+    public Map<String, String> getProfanitySoundexMap() { return profanitySoundexMap; }
+
+    // ML Toxicity detection
+    public boolean isMlToxicityEnabled() { return mlToxicityEnabled; }
+    public String getMlToxicityEndpoint() { return mlToxicityEndpoint; }
+    public int getMlToxicityTimeoutMs() { return mlToxicityTimeoutMs; }
+    public double getMlToxicityThreshold() { return mlToxicityThreshold; }
+    public List<String> getMlToxicLabels() { return mlToxicLabels; }
+    public String getMlApiKeyHeader() { return mlApiKeyHeader; }
+    public String getMlApiKey() { return mlApiKey; }
 
     public boolean isChatCooldownEnabled() { return chatCooldownEnabled; }
     public int getChatCooldownSeconds() { return chatCooldownSeconds; }
