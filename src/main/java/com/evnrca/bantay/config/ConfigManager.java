@@ -62,6 +62,8 @@ public class ConfigManager {
     private String helpReload;
     private String helpBypass;
     private String helpVersion;
+    private String helpEnglish;
+    private String helpFilipino;
     private String helpHelp;
     private String helpFooter;
     private String versionMsg;
@@ -137,6 +139,8 @@ public class ConfigManager {
         helpReload = colorize("&e/bantay reload &7- Reload configuration");
         helpBypass = colorize("&e/bantay bypass <player> &7- Toggle bypass for a player");
         helpVersion = colorize("&e/bantay version &7- Show plugin version");
+        helpEnglish = colorize("&e/bantay english <word> &7- Add English profanity word (auto-converts to regex)");
+        helpFilipino = colorize("&e/bantay filipino <word> &7- Add Filipino profanity word (auto-converts to regex)");
         helpHelp = colorize("&e/bantay help &7- Show this help message");
         helpFooter = colorize("&8&m--------------------------------");
         versionMsg = colorize("&eBantay &fv{version} &7by &fevnrca");
@@ -193,6 +197,8 @@ public class ConfigManager {
     public String getHelpBypass() { return helpBypass; }
     public String getHelpHelp() { return helpHelp; }
     public String getHelpVersion() { return helpVersion; }
+    public String getHelpEnglish() { return helpEnglish; }
+    public String getHelpFilipino() { return helpFilipino; }
     public String getHelpFooter() { return helpFooter; }
     public String getVersionMsg() { return versionMsg; }
 }

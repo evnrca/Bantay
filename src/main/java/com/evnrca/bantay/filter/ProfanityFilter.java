@@ -372,6 +372,38 @@ public class ProfanityFilter {
         return input.replaceAll("(.)\\1{2,}", "$1$1");
     }
 
+    /**
+     * Convert a word to a regex pattern that handles leetspeak variants.
+     * Example: "fuck" -> "(f|F)[uU]+[cC]+[kK]+"
+     * Handles: @/4->a, 3->e, 1/!->i, 0->o, $->s
+     */
+    public static String wordToRegex(String word) {
+        if (word == null || word.trim().isEmpty()) {
+            return null;
+        }
+        String[] parts = word.toLowerCase().trim().split("\\s+");
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < parts.length; i++) {
+            String part = parts[i];
+            if (i > 0) {
+                sb.append("\\s*");
+            }
+            for (char c : part.toCharArray()) {
+                switch (c) {
+                    case 'a' -> sb.append("[@4aA]+");
+                    case 'e' -> sb.append("[eE3]+");
+                    case 'i' -> sb.append("[iI!1]+");
+                    case 'o' -> sb.append("[oO0]+");
+                    case 's' -> sb.append("[sS$]+");
+                    default -> sb.append("[").append(Character.toLowerCase(c)).append(Character.toUpperCase(c)).append("]+");
+                }
+            }
+        }
+
+        return "\\b" + sb.toString() + "\\b";
+    }
+
     public static class FilterResult {
         public final String filteredMessage;
         public final boolean wasCensored;
