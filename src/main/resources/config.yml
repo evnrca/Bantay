@@ -211,11 +211,6 @@ cooldown:
 # ==============================================================================
 # All messages support &-style color codes (e.g., &c = red, &a = green, &e = yellow)
 # Placeholders: {seconds} = remaining cooldown, {command} = command name
-#
-# NOTE: The following messages are hardcoded and NOT configurable:
-#   reload-success, bypass-enabled, bypass-disabled, player-not-found,
-#   help-header, help-reload, help-bypass, help-version, help-help, help-footer, version
-# Only prefix, chat-cooldown, and command-cooldown can be customized here.
 
 messages:
   # Prefix for all plugin messages
