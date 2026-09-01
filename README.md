@@ -71,24 +71,6 @@ All messages support `&`-style color codes (`&c`=red, `&a`=green, `&e`=yellow, e
 | `messages.chat-cooldown` | `&cPlease wait {seconds} second(s) before chatting again.` |
 | `messages.command-cooldown` | `&cCommand &e{command} &cis on cooldown. Wait {seconds} second(s).` |
 
-**Hardcoded messages (NOT configurable in config.yml):**
-
-| Message | Default |
-|---------|---------|
-| `reload-success` | `&aConfiguration reloaded successfully!` |
-| `bypass-enabled` | `&aBypass enabled for &e{player}&a.` |
-| `bypass-disabled` | `&cBypass disabled for &e{player}&c.` |
-| `player-not-found` | `&cPlayer '&e{player}&c' not found.` |
-| `help-header` | `&8&m----------- &cBantay &8&m-----------` |
-| `help-reload` | `&e/bantay reload &7- Reload configuration` |
-| `help-bypass` | `&e/bantay bypass <player> &7- Toggle bypass for a player` |
-| `help-version` | `&e/bantay version &7- Show plugin version` |
-| `help-help` | `&e/bantay help &7- Show this help message` |
-| `help-footer` | `&8&m--------------------------------` |
-| `version` | `&eBantay &fv{version} &7by &fevnrca` |
-
-> **Note**: Admin/system messages are hardcoded to ensure consistency. Only `prefix`, `chat-cooldown`, and `command-cooldown` can be customized via config.yml.
-
 ## Permissions
 
 | Permission | Default | Description |
