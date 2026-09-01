@@ -130,6 +130,10 @@ filter:
       - "(f|F)[uU]+[cC]+[kK]+\\s*[oO0]+[fF]+[fF]*"
       - "(s|S)[cC]+[rR]+[eE3]+[wW]+\\s*[yY]+[oO0]+[uU]+"
       - "(g|G)[oO0]+\\s*[tT]+[oO0]+\\s*[hH]+[eE3]+[lL]+[lL]+"
+      # racial slurs (n-word variants)
+      - "(n|N)[iI!1]+[gG]+[gG]+[aA]+"
+      - "(n|N)[iI!1]+[gG]+[gG]+[eE3]+[rR]+"
+      - "(n|N)[1!]+[gG]+[gG]+[aA]+"
 
   # Phonetic matching (Soundex) for catching misspellings
   # When enabled, compares phonetic codes of words against profanity list

@@ -97,7 +97,8 @@ public class ProfanityFilter {
             "crap", "crappy", "piss", "pissing", "pissed",
             "cock", "cunt", "twat", "pussy", "dick", "prick",
             "whore", "slut", "hoe", "skank",
-            "bastard", "bollocks", "bugger", "wanker", "tosser"
+            "bastard", "bollocks", "bugger", "wanker", "tosser",
+            "nigger", "nigga"
         };
 
         for (String word : filipinoBaseWords) {
