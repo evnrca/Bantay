@@ -83,28 +83,58 @@ filter:
       # sira ulo
       - "(s|S)[iI!1]+[rR]+[@4aA]+\\s*(u|U)[lL]+[@0oO]+"
     english:
-      # damn
-      - "(d|D)[@4aA]+[mM]+[nN]+"
+      # damn / damn it / dammit
+      - "(d|D)[@4aA]+[mM]+[nN]+[nN]*"
+      - "(d|D)[@4aA]+[mM]+[iI!1]+[tT]+"
       # hell
       - "(h|H)[eE3]+[lL]+[lL]+"
-      # shit
-      - "(s|S)[hH]+[iI!1]+[tT]+"
-      # fuck
-      - "(f|F)[uU]+[cC]+[kK]+"
-      # bitch
-      - "(b|B)[iI!1]+[tT]+[cC]+[hH]+"
-      # ass
-      - "(a|A)[sS$]+[sS$]+"
-      # crap
-      - "(cC)+[rR]+[@4aA]+[pP]+"
+      # shit / shitty / bullshit
+      - "(s|S)[hH]+[iI!1]+[tT]+[yY]*"
+      - "(b|B)[uU]+[lL]+[lL]+[sS$]+[hH]+[iI!1]+[tT]+"
+      # fuck / fucker / fucking / motherfucker
+      - "(f|F)[uU]+[cC]+[kK]+[eE3]*[rR]*"
+      - "(f|F)[uU]+[cC]+[kK]+[iI!1]+[nN]+[gG]+"
+      - "(m|M)[oO0]+[tT]+[hH]+[eE3]+[rR]+[f|F][uU]+[cC]+[kK]+[eE3]*[rR]*"
+      # bitch / bitches / son of a bitch
+      - "(b|B)[iI!1]+[tT]+[cC]+[hH]+[eE3]*[sS$]*"
+      - "(s|S)[oO0]+[nN]+\\s*[oO0]+[fF]+\\s*[a|A]+\\s*(b|B)[iI!1]+[tT]+[cC]+[hH]+"
+      # ass / asshole / asshat / jackass / dumbass
+      - "(a|A)[sS$]+[sS$]+[hH]+[oO0]+[lL]+[eE3]*"
+      - "(a|A)[sS$]+[sS$]+[hH]+[@4aA]+[tT]+"
+      - "(j|J)[@4aA]+[cC]+[kK]+[a|A][sS$]+[sS$]+"
+      - "(d|D)[uU]+[mM]+[bB]+[@4aA]+[sS$]+[sS$]+"
+      # crap / crappy
+      - "(c|C)[rR]+[@4aA]+[pP]+[pP]*[yY]*"
+      # piss / pissing / pissed
+      - "(p|P)[iI!1]+[sS$]+[sS$]+[iI!1]*[nN]*[gG]*"
+      - "(p|P)[iI!1]+[sS$]+[sS$]+[eE3]+[dD]+"
+      # cock / cunt / twat / pussy / dick / prick
+      - "(c|C)[oO0]+[cC]+[kK]+"
+      - "(c|C)[uU]+[nN]+[tT]+"
+      - "(t|T)[wW]+[@4aA]+[tT]+"
+      - "(p|P)[uU]+[sS$]+[sS$]+[yY]+"
+      - "(d|D)[iI!1]+[cC]+[kK]+"
+      - "(p|P)[rR]+[iI!1]+[cC]+[kK]+"
+      # whore / slut / hoe / skank
+      - "(w|W)[hH]+[@0oO]+[rR]+[eE3]*"
+      - "(s|S)[lL]+[uU]+[tT]+"
+      - "(h|H)[oO0]+[eE3]*"
+      - "(s|S)[kK]+[@4aA]+[nN]+[kK]+"
+      # bastard / bollocks / bugger / wanker / tosser
+      - "(b|B)[@4aA]+[sS$]+[tT]+[@4aA]+[rR]+[dD]+"
+      - "(b|B)[oO0]+[lL]+[lL]+[oO0]+[cC]+[kK]+[sS$]*"
+      - "(b|B)[uU]+[gG]+[gG]+[eE3]+[rR]+"
+      - "(w|W)[@4aA]+[nN]+[kK]+[eE3]+[rR]+"
+      - "(t|T)[oO0]+[sS$]+[sS$]+[eE3]+[rR]+"
+      # fuck off / screw you / go to hell
+      - "(f|F)[uU]+[cC]+[kK]+\\s*[oO0]+[fF]+[fF]*"
+      - "(s|S)[cC]+[rR]+[eE3]+[wW]+\\s*[yY]+[oO0]+[uU]+"
+      - "(g|G)[oO0]+\\s*[tT]+[oO0]+\\s*[hH]+[eE3]+[lL]+[lL]+"
 
   # Phonetic matching (Soundex) for catching misspellings
   # When enabled, compares phonetic codes of words against profanity list
   # May produce false positives - use with caution
   phonetic-matching:
-    enabled: false
-    # Minimum phonetic similarity threshold (0.0-1.0)
-    threshold: 0.85
     enabled: false
     # Minimum phonetic similarity threshold (0.0-1.0)
     threshold: 0.85

@@ -91,7 +91,13 @@ public class ProfanityFilter {
             "kupal", "tarantado", "lintik", "peste", "pucha", "puta", "inutil", "sira ulo"
         };
         String[] englishBaseWords = {
-            "damn", "hell", "shit", "fuck", "bitch", "ass", "crap"
+            "damn", "dammit", "hell", "shit", "shitty", "bullshit",
+            "fuck", "fucker", "fucking", "motherfucker",
+            "bitch", "bitches", "ass", "asshole", "asshat", "jackass", "dumbass",
+            "crap", "crappy", "piss", "pissing", "pissed",
+            "cock", "cunt", "twat", "pussy", "dick", "prick",
+            "whore", "slut", "hoe", "skank",
+            "bastard", "bollocks", "bugger", "wanker", "tosser"
         };
 
         for (String word : filipinoBaseWords) {
