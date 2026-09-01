@@ -84,12 +84,24 @@ All messages support `&`-style color codes (`&c`=red, `&a`=green, `&e`=yellow, e
 |---------|---------|------------|-------------|
 | `/bantay reload` | `/bt reload` | `bantay.admin` | Reload config.yml without restart |
 | `/bantay bypass <player>` | `/bt bypass <player>` | `bantay.admin` | Toggle runtime bypass for a player |
+| `/bantay english <word>` | `/bt english <word>` | `bantay.admin` | Add English profanity word (auto-regex) |
+| `/bantay filipino <word>` | `/bt filipino <word>` | `bantay.admin` | Add Filipino profanity word (auto-regex) |
 | `/bantay version` | `/bt version` | `bantay.admin` | Show plugin version and author |
 | `/bantay help` | `/bt help` | `bantay.admin` | Show help |
 
 > **Note**: The `/bantay bypass` command currently only instructs you to use a permission plugin (LuckPerms, PermissionsEx) to manage the `bantay.bypass` permission for persistent bypass. Runtime-only toggling without a permission plugin is not implemented.
 
 ## Example Use Cases
+
+### Add a profanity word via command (auto-converts to regex)
+
+```bash
+/bantay english shithead
+# Adds: (s|S)[hH]+[iI!1]+[tT]+[hH]+[eE3]+[@4aA]+[dD]+
+
+/bantay filipino gago
+# Adds: (g|G)[@4aA]+[gG]+[@4aA]+
+```
 
 ### Add a custom regex pattern for Filipino profanity
 
