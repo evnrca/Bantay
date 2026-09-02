@@ -3,7 +3,6 @@ package com.evnrca.bantay.cooldown;
 import com.evnrca.bantay.config.ConfigManager;
 
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -51,14 +50,51 @@ public class CooldownManager {
         chatCooldowns.put(playerId, System.currentTimeMillis());
     }
 
-    public boolean checkCommandCooldown(UUID playerId, String command) {
+    public String resolveCommandKey(String commandLine) {
+        String normalized = normalizeCommand(commandLine);
+        String matched = null;
+
+        for (String command : config.getExemptCommands()) {
+            matched = longerMatch(normalized, command, matched);
+        }
+        for (String command : config.getCommandOverrides().keySet()) {
+            matched = longerMatch(normalized, command, matched);
+        }
+
+        if (matched != null) {
+            return matched;
+        }
+
+        int spaceIndex = normalized.indexOf(' ');
+        return spaceIndex >= 0 ? normalized.substring(0, spaceIndex) : normalized;
+    }
+
+    private String longerMatch(String commandLine, String configuredCommand, String currentMatch) {
+        String command = normalizeCommand(configuredCommand);
+        if (commandLine.equals(command) || commandLine.startsWith(command + " ")) {
+            if (currentMatch == null || command.length() > currentMatch.length()) {
+                return command;
+            }
+        }
+        return currentMatch;
+    }
+
+    private String normalizeCommand(String command) {
+        return command == null ? "" : command.trim().replaceAll("\\s+", " ").toLowerCase();
+    }
+
+    public boolean isCommandExempt(String commandKey) {
+        return config.getExemptCommands().contains(normalizeCommand(commandKey));
+    }
+
+    public boolean checkCommandCooldown(UUID playerId, String commandKey) {
         if (!config.isCommandCooldownEnabled()) {
             return false;
         }
 
-        String lowerCommand = command.toLowerCase();
+        String lowerCommand = normalizeCommand(commandKey);
 
-        if (config.getExemptCommands().contains(lowerCommand)) {
+        if (isCommandExempt(lowerCommand)) {
             return false;
         }
 
@@ -83,8 +119,8 @@ public class CooldownManager {
         return elapsed < cooldownSeconds;
     }
 
-    public int getRemainingCommandCooldown(UUID playerId, String command) {
-        String lowerCommand = command.toLowerCase();
+    public int getRemainingCommandCooldown(UUID playerId, String commandKey) {
+        String lowerCommand = normalizeCommand(commandKey);
 
         int cooldownSeconds = config.getCommandOverrides().getOrDefault(lowerCommand, config.getCommandCooldownSeconds());
 
@@ -107,9 +143,9 @@ public class CooldownManager {
         return Math.max(0, cooldownSeconds - (int) elapsed);
     }
 
-    public void setCommandCooldown(UUID playerId, String command) {
+    public void setCommandCooldown(UUID playerId, String commandKey) {
         long now = System.currentTimeMillis();
-        String lowerCommand = command.toLowerCase();
+        String lowerCommand = normalizeCommand(commandKey);
 
         commandCooldowns.computeIfAbsent(playerId, k -> new ConcurrentHashMap<>())
                 .put(lowerCommand, now);

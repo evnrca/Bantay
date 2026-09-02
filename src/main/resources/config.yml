@@ -173,7 +173,9 @@ cooldown:
     seconds: 2
 
     # Per-command cooldown overrides (in seconds)
-    # These override the global cooldown for specific commands
+    # These override the global cooldown for specific commands.
+    # Multi-word command keys are supported, e.g. "/fix all": 30.
+    # Bantay matches the longest configured command key first.
     per-command-overrides:
       "/spawn": 10
       "/tpa": 15
@@ -181,7 +183,8 @@ cooldown:
       "/warp": 5
 
     # Commands that should never be throttled (even without bypass permission)
-    # Add essential commands here like /msg, /help, /rules, etc.
+    # Multi-word command keys are supported here too.
+    # Add essential commands here like /msg, /help, /rules, /fix all, etc.
     exempt-commands: []
 
 # ==============================================================================

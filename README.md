@@ -49,8 +49,8 @@ All options are documented in the generated `config.yml`. Below is a summary tab
 |--------|---------|-------------|
 | `cooldown.command.enabled` | `true` | Enable command cooldown |
 | `cooldown.command.seconds` | `2` | Global command cooldown in seconds |
-| `cooldown.command.per-command-overrides` | `{"/spawn": 10, "/tpa": 15, "/home": 10, "/warp": 5}` | Per-command cooldown overrides (seconds) |
-| `cooldown.command.exempt-commands` | `[]` | Commands never throttled (e.g., `/msg`, `/help`) |
+| `cooldown.command.per-command-overrides` | `{"/spawn": 10, "/tpa": 15, "/home": 10, "/warp": 5}` | Per-command cooldown overrides. Supports multi-word keys like `/fix all` |
+| `cooldown.command.exempt-commands` | `[]` | Commands never throttled. Supports multi-word keys like `/fix all` |
 
 ### Messages Section
 
@@ -134,6 +134,24 @@ cooldown:
       "/tpa": 30  # 30-second cooldown for /tpa
 ```
 
+### Stricter cooldown on a multi-word command
+
+```yaml
+cooldown:
+  command:
+    per-command-overrides:
+      "/fix all": 60  # 60-second cooldown for /fix all
+```
+
+### Exempt a multi-word command from cooldown
+
+```yaml
+cooldown:
+  command:
+    exempt-commands:
+      - "/fix all"
+```
+
 ### Disable English filter, keep only Filipino
 
 ```yaml
@@ -191,7 +209,7 @@ The compiled JAR will be in `target/Bantay-1.0.0.jar`.
 ### Cooldowns
 
 - **Chat**: Per-player timestamp stored in `ConcurrentHashMap<UUID, Long>`.
-- **Commands**: Global per-player + optional per-command overrides. Exempt commands list bypasses cooldown entirely.
+- **Commands**: Global per-player + optional per-command overrides. Multi-word command keys are supported and the longest configured match is used first. Exempt commands list bypasses cooldown entirely.
 
 ## License
 

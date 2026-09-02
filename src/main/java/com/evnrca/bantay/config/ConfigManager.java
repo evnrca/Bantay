@@ -101,12 +101,14 @@ public class ConfigManager {
         commandOverrides = new ConcurrentHashMap<>();
         if (config.isConfigurationSection("cooldown.command.per-command-overrides")) {
             for (String key : config.getConfigurationSection("cooldown.command.per-command-overrides").getKeys(false)) {
-                commandOverrides.put(key.toLowerCase(), config.getInt("cooldown.command.per-command-overrides." + key));
+                commandOverrides.put(normalizeCommand(key), config.getInt("cooldown.command.per-command-overrides." + key));
             }
         }
         exemptCommands = ConcurrentHashMap.newKeySet();
         if (config.isList("cooldown.command.exempt-commands")) {
-            exemptCommands.addAll(config.getStringList("cooldown.command.exempt-commands"));
+            for (String command : config.getStringList("cooldown.command.exempt-commands")) {
+                exemptCommands.add(normalizeCommand(command));
+            }
         }
 
         // Messages (hardcoded)
@@ -130,6 +132,10 @@ public class ConfigManager {
 
     private String colorize(String input) {
         return org.bukkit.ChatColor.translateAlternateColorCodes('&', input);
+    }
+
+    private String normalizeCommand(String command) {
+        return command == null ? "" : command.trim().replaceAll("\\s+", " ").toLowerCase();
     }
 
     // Getters

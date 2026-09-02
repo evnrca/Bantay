@@ -37,10 +37,9 @@ public class CommandListener implements Listener {
             return;
         }
 
-        String[] parts = message.split("\\s+", 2);
-        String command = parts[0].toLowerCase();
+        String command = cooldownManager.resolveCommandKey(message);
 
-        if (plugin.getConfigManager().getExemptCommands().contains(command)) {
+        if (cooldownManager.isCommandExempt(command)) {
             return;
         }
 
